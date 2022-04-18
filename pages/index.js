@@ -3,17 +3,28 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { MdPerson } from 'react-icons/md';
 import { auth } from '../firebase/apiConfig';
-
-import { useSelector } from 'react-redux';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { setCookies } from 'cookies-next';
+import { useRouter } from 'next/router';
 
 export default function Home() {
-  const globalState = useSelector((state) => state);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const router = useRouter();
 
   async function login(event) {
     event.preventDefault();
-    console.log(globalState);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      setCookies('userID', auth.currentUser.uid, {
+        maxAge: 3600, // Will expire after 1hr (value is in number of sec.)
+      });
+      router.push('/expenses');
+    } catch (error) {
+      toast.error(error.message);
+    }
   }
 
   return (
@@ -21,9 +32,9 @@ export default function Home() {
       <Head>
         <title>Expenses - Login</title>
       </Head>
-      <main className="grid place-items-center px-2 min-h-screen bg-gray-200">
+      <main className="grid place-items-center px-2 min-h-screen bg-gray-800">
         <div className="p-5 bg-gray-300 rounded-md text-black shadow-lg">
-          <div className="bg-gray-400 w-20 h-20 mx-auto mb-5 rounded-full grid place-items-center">
+          <div className="bg-gray-500 w-20 h-20 mx-auto mb-5 rounded-full grid place-items-center">
             <MdPerson className="text-5xl" />
           </div>
           <form className="text-black" onSubmit={login}>
