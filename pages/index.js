@@ -32,8 +32,8 @@ export default function Home() {
       <Head>
         <title>Expenses - Login</title>
       </Head>
-      <main className="grid place-items-center px-2 min-h-screen bg-gray-800">
-        <div className="p-5 bg-gray-300 rounded-md text-black shadow-lg">
+      <main className="grid place-items-center px-2 min-h-screen bg-gray-800 pt-32">
+        <div className="p-5 bg-gray-300 rounded-md ">
           <div className="bg-gray-500 w-20 h-20 mx-auto mb-5 rounded-full grid place-items-center">
             <MdPerson className="text-5xl" />
           </div>
