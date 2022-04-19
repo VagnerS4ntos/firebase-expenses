@@ -16,6 +16,8 @@ const monthsOfYear = [
 
 const GET_ALL_EXPENSES = 'getAllExpenses';
 const GET_ALL_USER_EXPENSES = 'getAllUserExpenses';
+const START_LOADING = 'startLoading';
+const STOP_LOADING = 'stopLoading';
 
 export function getAllExpensesData(data) {
   return { type: GET_ALL_EXPENSES, payload: data };
@@ -23,6 +25,14 @@ export function getAllExpensesData(data) {
 
 export function getAllRenderExpenses(data) {
   return { type: GET_ALL_USER_EXPENSES, payload: data };
+}
+
+export function startLoading() {
+  return { type: START_LOADING };
+}
+
+export function stopLoading() {
+  return { type: STOP_LOADING };
 }
 
 const initialState = {
@@ -46,6 +56,10 @@ export function rootReducer(state = initialState, action) {
       return { ...state, allExpenses: action.payload };
     case GET_ALL_USER_EXPENSES:
       return { ...state, expensesOnScreen: action.payload };
+    case START_LOADING:
+      return { ...state, loading: true };
+    case STOP_LOADING:
+      return { ...state, loading: false };
     default:
       return state;
   }
