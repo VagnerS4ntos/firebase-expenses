@@ -13,6 +13,7 @@ import {
 import { db } from '../firebase/apiConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { capitalizeFirstLetter } from '../helpers/functions';
+import SelectDate from '../components/SelectDate';
 
 function Expenses() {
   const globalState = useSelector((state) => state);
@@ -41,6 +42,7 @@ function Expenses() {
   return (
     <main className="px-2 pt-32 bg-gray-800 text-white min-h-screen">
       <section className="container mx-auto">
+        <SelectDate />
         {globalState.loading ? (
           <h1 className="mt-10">Loading...</h1>
         ) : (
