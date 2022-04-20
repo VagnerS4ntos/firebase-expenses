@@ -14,6 +14,7 @@ import { db } from '../firebase/apiConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { capitalizeFirstLetter } from '../helpers/functions';
 import SelectDate from '../components/SelectDate';
+import { monthsOfYear } from '../helpers/functions';
 
 function Expenses() {
   const globalState = useSelector((state) => state);
@@ -31,21 +32,37 @@ function Expenses() {
           (item) => (item.date = new Date(item.date.seconds * 1000)),
         );
         store.dispatch(getAllExpensesData(expenses));
+
+        const dataOnScreen = expenses.filter(
+          (expense) =>
+            monthsOfYear[expense.date.getMonth()] === globalState.month &&
+            expense.date.getFullYear() == globalState.year,
+        );
+        store.dispatch(getAllRenderExpenses(dataOnScreen));
       } catch (error) {
         toast.error(error.message);
       }
       store.dispatch(stopLoading());
     }
     getExpenses();
-  }, []);
+  }, [globalState.month, globalState.year]);
+
+  if (globalState.loading) {
+    return (
+      <main className="bg-gray-800 min-h-screen text-white pt-32">
+        <div className="container mx-auto">
+          <h1 className="mt-10">Loading...</h1>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="px-2 pt-32 bg-gray-800 text-white min-h-screen">
       <section className="container mx-auto">
         <SelectDate />
-        {globalState.loading ? (
-          <h1 className="mt-10">Loading...</h1>
-        ) : (
+
+        {globalState.expensesOnScreen.length ? (
           <table className="border-separate border border-white w-full mx-auto mt-10">
             <thead>
               <tr className="text-left bg-gray-300 text-black">
@@ -57,7 +74,7 @@ function Expenses() {
               </tr>
             </thead>
             <tbody>
-              {globalState.allExpenses.map((expense) => {
+              {globalState.expensesOnScreen.map((expense) => {
                 return (
                   <tr key={expense.id}>
                     <td className="border border-white p-2">
@@ -81,6 +98,8 @@ function Expenses() {
               })}
             </tbody>
           </table>
+        ) : (
+          <h1 className="mt-10">No data found...</h1>
         )}
       </section>
     </main>
