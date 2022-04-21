@@ -66,7 +66,7 @@ function NewExpense() {
         onClick={cancelCreateExpense}
       >
         <div className="bg-green-600 p-5 rounded-md text-center text-white font-semibold popUp w-60">
-          <h2 className="uppercase mb-2">Create Expense</h2>
+          <h2 className="uppercase mb-4">Create Expense</h2>
 
           <form className="space-y-3" onSubmit={saveNewExpense}>
             <div className="space-x-2 text-left">

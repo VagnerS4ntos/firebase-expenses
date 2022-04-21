@@ -9,6 +9,8 @@ import {
   getAllRenderExpenses,
   stopLoading,
   createExpense,
+  deleteExpense,
+  getExpenseId,
 } from '../globalStates/store';
 import { db } from '../firebase/apiConfig';
 import { collection, getDocs } from 'firebase/firestore';
@@ -17,6 +19,7 @@ import SelectDate from '../components/SelectDate';
 import { monthsOfYear, numberToCurrency } from '../helpers/functions';
 import { auth } from '../firebase/apiConfig';
 import NewExpense from '../components/NewExpense';
+import DeleteExpense from '../components/DeleteExpense';
 
 function Expenses() {
   const globalState = useSelector((state) => state);
@@ -40,7 +43,7 @@ function Expenses() {
       store.dispatch(stopLoading());
     }
     getExpenses();
-  }, [globalState.createExpense]);
+  }, [globalState.createExpense, globalState.deleteExpense]);
 
   //GET EXPENSES TO RENDER
   React.useEffect(() => {
@@ -52,6 +55,17 @@ function Expenses() {
     );
     store.dispatch(getAllRenderExpenses(dataOnScreen));
   }, [globalState.allExpenses, globalState.month, globalState.year]);
+
+  function openDeleteWindow({ target }) {
+    store.dispatch(deleteExpense(true));
+    let expenseID = '';
+    if (target.tagName === 'path') {
+      expenseID = target.parentNode.dataset.id;
+    } else {
+      expenseID = target.dataset.id;
+    }
+    store.dispatch(getExpenseId(expenseID));
+  }
 
   if (globalState.loading) {
     return (
@@ -66,6 +80,7 @@ function Expenses() {
   return (
     <main className="px-2 pt-32 bg-gray-800 text-white min-h-screen">
       {globalState.createExpense && <NewExpense />}
+      {globalState.deleteExpense && <DeleteExpense />}
 
       <section className="container mx-auto">
         <SelectDate />
@@ -103,7 +118,11 @@ function Expenses() {
                     </td>
                     <td className="border border-white p-2">
                       <div className="flex justify-center gap-2 text-xl">
-                        <MdDelete className="cursor-pointer text-red-500" />
+                        <MdDelete
+                          data-id={expense.id}
+                          className="cursor-pointer text-red-500"
+                          onClick={openDeleteWindow}
+                        />
                         <MdEdit className="cursor-pointer" />
                       </div>
                     </td>

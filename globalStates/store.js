@@ -29,6 +29,14 @@ export function createExpense(status) {
   return { type: 'openNewExpenseWindow', payload: status };
 }
 
+export function deleteExpense(status) {
+  return { type: 'openDeleteExpenseWindow', payload: status };
+}
+
+export function getExpenseId(id) {
+  return { type: 'getExpenseId', payload: id };
+}
+
 const initialState = {
   allExpenses: [],
   expensesOnScreen: [],
@@ -60,6 +68,10 @@ export function rootReducer(state = initialState, action) {
       return { ...state, month: action.payload };
     case 'openNewExpenseWindow':
       return { ...state, createExpense: action.payload };
+    case 'openDeleteExpenseWindow':
+      return { ...state, deleteExpense: action.payload };
+    case 'getExpenseId':
+      return { ...state, currentExpenseId: action.payload };
     default:
       return state;
   }
