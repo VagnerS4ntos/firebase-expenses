@@ -3,9 +3,9 @@ export function capitalizeFirstLetter(string) {
 }
 
 export function numberToCurrency(value) {
-  return Number(value).toLocaleString('pt-br', {
+  return Number(value).toLocaleString('en-us', {
     style: 'currency',
-    currency: 'BRL',
+    currency: 'USD',
   });
 }
 

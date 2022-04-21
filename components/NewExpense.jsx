@@ -2,11 +2,22 @@ import React from 'react';
 import { store, createExpense } from '../globalStates/store';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase/apiConfig';
+import { useSelector } from 'react-redux';
+import { auth } from '../firebase/apiConfig';
+import { v4 as uuid } from 'uuid';
+import {
+  monthsOfYear,
+  validateExpenseValue,
+  getNewDate,
+} from '../helpers/functions';
 
 function NewExpense() {
   const [expenseName, setExpenseName] = React.useState('');
   const [expenseType, setExpenseType] = React.useState('');
   const [expenseValue, setExpenseValue] = React.useState('');
+  const globalState = useSelector((state) => state);
 
   function cancelCreateExpense(event) {
     event.preventDefault();
@@ -26,7 +37,21 @@ function NewExpense() {
       } else if (expenseValue === '') {
         toast.error('Invalid Expense Value');
       } else {
-        console.log('SAVE EXPENSE');
+        const id = uuid();
+        const newDate = getNewDate(
+          globalState.year,
+          monthsOfYear.indexOf(globalState.month),
+        );
+        const newValue = validateExpenseValue(expenseValue, expenseType);
+        await setDoc(doc(db, 'allExpenses', id), {
+          name: expenseName,
+          type: expenseType,
+          value: newValue,
+          user: auth.currentUser.uid,
+          id: id,
+          date: newDate,
+        });
+        store.dispatch(createExpense(false));
       }
     } catch (error) {
       toast.error(error.message);

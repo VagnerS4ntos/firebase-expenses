@@ -14,12 +14,14 @@ import { db } from '../firebase/apiConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { capitalizeFirstLetter } from '../helpers/functions';
 import SelectDate from '../components/SelectDate';
-import { monthsOfYear } from '../helpers/functions';
+import { monthsOfYear, numberToCurrency } from '../helpers/functions';
+import { auth } from '../firebase/apiConfig';
 import NewExpense from '../components/NewExpense';
 
 function Expenses() {
   const globalState = useSelector((state) => state);
 
+  //GET ALL EXPENSES
   React.useEffect(() => {
     async function getExpenses() {
       try {
@@ -32,20 +34,24 @@ function Expenses() {
           (item) => (item.date = new Date(item.date.seconds * 1000)),
         );
         store.dispatch(getAllExpensesData(expenses));
-
-        const dataOnScreen = expenses.filter(
-          (expense) =>
-            monthsOfYear[expense.date.getMonth()] === globalState.month &&
-            expense.date.getFullYear() == globalState.year,
-        );
-        store.dispatch(getAllRenderExpenses(dataOnScreen));
       } catch (error) {
         toast.error(error.message);
       }
       store.dispatch(stopLoading());
     }
     getExpenses();
-  }, [globalState.month, globalState.year]);
+  }, [globalState.createExpense]);
+
+  //GET EXPENSES TO RENDER
+  React.useEffect(() => {
+    const dataOnScreen = globalState.allExpenses.filter(
+      (expense) =>
+        expense.user === auth.currentUser.uid &&
+        monthsOfYear[expense.date.getMonth()] === globalState.month &&
+        expense.date.getFullYear() == globalState.year,
+    );
+    store.dispatch(getAllRenderExpenses(dataOnScreen));
+  }, [globalState.allExpenses, globalState.month, globalState.year]);
 
   if (globalState.loading) {
     return (
@@ -93,7 +99,7 @@ function Expenses() {
                         expense.value < 0 ? 'text-red-500' : 'text-green-500'
                       }`}
                     >
-                      {expense.value}
+                      {numberToCurrency(expense.value)}
                     </td>
                     <td className="border border-white p-2">
                       <div className="flex justify-center gap-2 text-xl">
