@@ -7,21 +7,21 @@ import {
   store,
   getAllExpensesData,
   getAllRenderExpenses,
-  startLoading,
   stopLoading,
+  createExpense,
 } from '../globalStates/store';
 import { db } from '../firebase/apiConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import { capitalizeFirstLetter } from '../helpers/functions';
 import SelectDate from '../components/SelectDate';
 import { monthsOfYear } from '../helpers/functions';
+import NewExpense from '../components/NewExpense';
 
 function Expenses() {
   const globalState = useSelector((state) => state);
 
   React.useEffect(() => {
     async function getExpenses() {
-      store.dispatch(startLoading());
       try {
         const data = await getDocs(collection(db, 'allExpenses'));
         const expenses = data.docs.map((doc) => ({
@@ -59,8 +59,16 @@ function Expenses() {
 
   return (
     <main className="px-2 pt-32 bg-gray-800 text-white min-h-screen">
+      {globalState.createExpense && <NewExpense />}
+
       <section className="container mx-auto">
         <SelectDate />
+        <button
+          className="bg-green-600 px-2 py-1 rounded hover:bg-green-700 mt-10"
+          onClick={() => store.dispatch(createExpense(true))}
+        >
+          New Expense
+        </button>
 
         {globalState.expensesOnScreen.length ? (
           <table className="border-separate border border-white w-full mx-auto mt-10">

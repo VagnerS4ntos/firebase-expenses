@@ -1,35 +1,32 @@
 import { createStore } from 'redux';
 import { monthsOfYear } from '../helpers/functions';
 
-const GET_ALL_EXPENSES = 'getAllExpenses';
-const GET_ALL_USER_EXPENSES = 'getAllUserExpenses';
-const START_LOADING = 'startLoading';
-const STOP_LOADING = 'stopLoading';
-const GET_YEAR = 'getYear';
-const GET_MONTH = 'getMonth';
-
 export function getAllExpensesData(data) {
-  return { type: GET_ALL_EXPENSES, payload: data };
+  return { type: 'getAllExpenses', payload: data };
 }
 
 export function getAllRenderExpenses(data) {
-  return { type: GET_ALL_USER_EXPENSES, payload: data };
+  return { type: 'getAllUserExpenses', payload: data };
 }
 
 export function startLoading() {
-  return { type: START_LOADING };
+  return { type: 'startLoading' };
 }
 
 export function stopLoading() {
-  return { type: STOP_LOADING };
+  return { type: 'stopLoading' };
 }
 
 export function getYear(year) {
-  return { type: GET_YEAR, payload: year };
+  return { type: 'getYear', payload: year };
 }
 
 export function getMonth(month) {
-  return { type: GET_MONTH, payload: month };
+  return { type: 'getMonth', payload: month };
+}
+
+export function createExpense(status) {
+  return { type: 'openNewExpenseWindow', payload: status };
 }
 
 const initialState = {
@@ -49,18 +46,20 @@ const initialState = {
 export const store = createStore(rootReducer);
 export function rootReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ALL_EXPENSES:
+    case 'getAllExpenses':
       return { ...state, allExpenses: action.payload };
-    case GET_ALL_USER_EXPENSES:
+    case 'getAllUserExpenses':
       return { ...state, expensesOnScreen: action.payload };
-    case START_LOADING:
+    case 'startLoading':
       return { ...state, loading: true };
-    case STOP_LOADING:
+    case 'stopLoading':
       return { ...state, loading: false };
-    case GET_YEAR:
+    case 'getYear':
       return { ...state, year: action.payload };
-    case GET_MONTH:
+    case 'getMonth':
       return { ...state, month: action.payload };
+    case 'openNewExpenseWindow':
+      return { ...state, createExpense: action.payload };
     default:
       return state;
   }
