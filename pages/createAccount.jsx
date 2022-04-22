@@ -38,7 +38,7 @@ export default function SignUp() {
       </Head>
       <main className="grid place-items-center px-2 min-h-screen bg-gray-800 pt-32">
         <div className="p-5 bg-gray-300 rounded-md">
-          <div className="bg-gray-400 w-20 h-20 mx-auto mb-5 rounded-full grid place-items-center">
+          <div className="bg-gray-500 w-20 h-20 mx-auto mb-5 rounded-full grid place-items-center">
             <MdPerson className="text-5xl" />
           </div>
           <form className="text-black" onSubmit={signUp}>
@@ -73,15 +73,6 @@ export default function SignUp() {
             <button className="bg-blue-400 uppercase font-semibold px-4 py-1 mt-5 rounded-md w-full hover:bg-blue-500">
               Sign up
             </button>
-
-            <Link href="/resetPassword" passHref>
-              <p className="mt-2 text-sm">
-                Forgot password?{' '}
-                <a className="text-red-500 cursor-pointer font-semibold">
-                  Reset
-                </a>
-              </p>
-            </Link>
 
             <Link href="/" passHref>
               <p className="mt-2 text-sm">
