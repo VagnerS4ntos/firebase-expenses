@@ -37,6 +37,10 @@ export function getExpenseId(id) {
   return { type: 'getExpenseId', payload: id };
 }
 
+export function editExpense(status) {
+  return { type: 'editExpense', payload: status };
+}
+
 const initialState = {
   allExpenses: [],
   expensesOnScreen: [],
@@ -72,6 +76,8 @@ export function rootReducer(state = initialState, action) {
       return { ...state, deleteExpense: action.payload };
     case 'getExpenseId':
       return { ...state, currentExpenseId: action.payload };
+    case 'editExpense':
+      return { ...state, editExpense: action.payload };
     default:
       return state;
   }

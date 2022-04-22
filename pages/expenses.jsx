@@ -11,6 +11,7 @@ import {
   createExpense,
   deleteExpense,
   getExpenseId,
+  editExpense,
 } from '../globalStates/store';
 import { db } from '../firebase/apiConfig';
 import { collection, getDocs } from 'firebase/firestore';
@@ -20,9 +21,11 @@ import { monthsOfYear, numberToCurrency } from '../helpers/functions';
 import { auth } from '../firebase/apiConfig';
 import NewExpense from '../components/NewExpense';
 import DeleteExpense from '../components/DeleteExpense';
+import EditExpense from '../components/EditExpense';
 
 function Expenses() {
   const globalState = useSelector((state) => state);
+  const [currentExpense, setCurrentExpense] = React.useState([]);
 
   //GET ALL EXPENSES
   React.useEffect(() => {
@@ -43,7 +46,11 @@ function Expenses() {
       store.dispatch(stopLoading());
     }
     getExpenses();
-  }, [globalState.createExpense, globalState.deleteExpense]);
+  }, [
+    globalState.createExpense,
+    globalState.deleteExpense,
+    globalState.editExpense,
+  ]);
 
   //GET EXPENSES TO RENDER
   React.useEffect(() => {
@@ -67,6 +74,22 @@ function Expenses() {
     store.dispatch(getExpenseId(expenseID));
   }
 
+  function openEditWindow({ target }) {
+    store.dispatch(editExpense(true));
+    let expenseID = '';
+    if (target.tagName === 'path') {
+      expenseID = target.parentNode.dataset.id;
+    } else {
+      expenseID = target.dataset.id;
+    }
+    store.dispatch(getExpenseId(expenseID));
+
+    const currentEditing = globalState.allExpenses.filter(
+      (expense) => expense.id === expenseID,
+    );
+    setCurrentExpense(...currentEditing);
+  }
+
   if (globalState.loading) {
     return (
       <main className="bg-gray-800 min-h-screen text-white pt-32">
@@ -81,6 +104,9 @@ function Expenses() {
     <main className="px-2 pt-32 bg-gray-800 text-white min-h-screen">
       {globalState.createExpense && <NewExpense />}
       {globalState.deleteExpense && <DeleteExpense />}
+      {globalState.editExpense && (
+        <EditExpense currentExpenseEditing={currentExpense} />
+      )}
 
       <section className="container mx-auto">
         <SelectDate />
@@ -123,7 +149,11 @@ function Expenses() {
                           className="cursor-pointer text-red-500"
                           onClick={openDeleteWindow}
                         />
-                        <MdEdit className="cursor-pointer" />
+                        <MdEdit
+                          data-id={expense.id}
+                          className="cursor-pointer"
+                          onClick={openEditWindow}
+                        />
                       </div>
                     </td>
                   </tr>
