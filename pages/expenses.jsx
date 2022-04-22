@@ -12,16 +12,18 @@ import {
   deleteExpense,
   getExpenseId,
   editExpense,
+  getBalance,
 } from '../globalStates/store';
 import { db } from '../firebase/apiConfig';
 import { collection, getDocs } from 'firebase/firestore';
-import { capitalizeFirstLetter } from '../helpers/functions';
+import { capitalizeFirstLetter, getFinalBalance } from '../helpers/functions';
 import SelectDate from '../components/SelectDate';
 import { monthsOfYear, numberToCurrency } from '../helpers/functions';
 import { auth } from '../firebase/apiConfig';
 import NewExpense from '../components/NewExpense';
 import DeleteExpense from '../components/DeleteExpense';
 import EditExpense from '../components/EditExpense';
+import Balance from '../components/Balance';
 
 function Expenses() {
   const globalState = useSelector((state) => state);
@@ -60,6 +62,17 @@ function Expenses() {
         monthsOfYear[expense.date.getMonth()] === globalState.month &&
         expense.date.getFullYear() == globalState.year,
     );
+
+    const totalExpense = getFinalBalance(dataOnScreen, 'expense');
+    const totalIncome = getFinalBalance(dataOnScreen, 'income');
+    const totalBalance = totalIncome + totalExpense;
+    const storeBalance = {
+      totalExpense: totalExpense,
+      totalIncome: totalIncome,
+      finalBalance: totalBalance,
+    };
+
+    store.dispatch(getBalance(storeBalance));
     store.dispatch(getAllRenderExpenses(dataOnScreen));
   }, [globalState.allExpenses, globalState.month, globalState.year]);
 
@@ -110,6 +123,7 @@ function Expenses() {
 
       <section className="container mx-auto">
         <SelectDate />
+        <Balance />
         <button
           className="bg-green-600 px-2 py-1 rounded hover:bg-green-700 mt-10"
           onClick={() => store.dispatch(createExpense(true))}

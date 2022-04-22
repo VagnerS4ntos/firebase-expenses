@@ -41,6 +41,10 @@ export function editExpense(status) {
   return { type: 'editExpense', payload: status };
 }
 
+export function getBalance(balance) {
+  return { type: 'getBalance', payload: balance };
+}
+
 const initialState = {
   allExpenses: [],
   expensesOnScreen: [],
@@ -78,6 +82,8 @@ export function rootReducer(state = initialState, action) {
       return { ...state, currentExpenseId: action.payload };
     case 'editExpense':
       return { ...state, editExpense: action.payload };
+    case 'getBalance':
+      return { ...state, balance: action.payload };
     default:
       return state;
   }
