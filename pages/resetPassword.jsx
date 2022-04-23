@@ -57,3 +57,20 @@ function ResetPassword() {
 }
 
 export default ResetPassword;
+
+export const getServerSideProps = async (context) => {
+  const userID = context.req.cookies['userID'];
+
+  if (userID) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

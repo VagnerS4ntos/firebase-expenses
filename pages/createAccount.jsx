@@ -18,14 +18,22 @@ export default function SignUp() {
   async function signUp(event) {
     event.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(auth.currentUser, {
-        displayName: name,
-      });
-      setCookies('userID', auth.currentUser.uid, {
-        maxAge: 3600, // Will expire after 1hr (value is in number of sec.)
-      });
-      router.push('/expenses');
+      if (name === '') {
+        toast.error('Invalid name.');
+      } else if (email === '') {
+        toast.error('Invalid e-mail.');
+      } else if (password === '') {
+        toast.error('Invalid password.');
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+        });
+        setCookies('userID', auth.currentUser.uid, {
+          maxAge: 3600, // Will expire after 1hr (value is in number of sec.)
+        });
+        router.push('/expenses');
+      }
     } catch (error) {
       toast.error(error.message);
     }
