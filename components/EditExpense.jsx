@@ -38,6 +38,7 @@ function EditExpense({ currentExpenseEditing }) {
           type: expenseType,
           value: newValue,
         });
+        toast.success('Expense successfully updated.');
         store.dispatch(editExpense(false));
       }
     } catch (error) {

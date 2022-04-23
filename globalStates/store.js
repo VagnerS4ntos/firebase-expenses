@@ -9,12 +9,8 @@ export function getAllRenderExpenses(data) {
   return { type: 'getAllUserExpenses', payload: data };
 }
 
-export function startLoading() {
-  return { type: 'startLoading' };
-}
-
-export function stopLoading() {
-  return { type: 'stopLoading' };
+export function loading(status) {
+  return { type: 'loading', payload: status };
 }
 
 export function getYear(year) {
@@ -66,10 +62,8 @@ export function rootReducer(state = initialState, action) {
       return { ...state, allExpenses: action.payload };
     case 'getAllUserExpenses':
       return { ...state, expensesOnScreen: action.payload };
-    case 'startLoading':
-      return { ...state, loading: true };
-    case 'stopLoading':
-      return { ...state, loading: false };
+    case 'loading':
+      return { ...state, loading: action.payload };
     case 'getYear':
       return { ...state, year: action.payload };
     case 'getMonth':

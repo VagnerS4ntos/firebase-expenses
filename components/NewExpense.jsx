@@ -51,6 +51,7 @@ function NewExpense() {
           id: id,
           date: newDate,
         });
+        toast.success('Expense successfully created.');
         store.dispatch(createExpense(false));
       }
     } catch (error) {

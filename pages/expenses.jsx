@@ -7,7 +7,7 @@ import {
   store,
   getAllExpensesData,
   getAllRenderExpenses,
-  stopLoading,
+  loading,
   createExpense,
   deleteExpense,
   getExpenseId,
@@ -45,7 +45,7 @@ function Expenses() {
       } catch (error) {
         toast.error(error.message);
       }
-      store.dispatch(stopLoading());
+      store.dispatch(loading(false));
     }
     getExpenses();
   }, [

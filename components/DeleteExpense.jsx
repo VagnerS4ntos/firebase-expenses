@@ -20,6 +20,7 @@ function DeleteExpense() {
     event.preventDefault();
     try {
       await deleteDoc(doc(db, 'allExpenses', globalState.currentExpenseId));
+      toast.success('Expense successfully deleted.');
       store.dispatch(deleteExpense(false));
     } catch (error) {
       toast.error(error.message);

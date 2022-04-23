@@ -27,9 +27,9 @@ export function getNewDate(year, indexMonth) {
 }
 
 export function getFinalBalance(allData, type) {
-  const balanceItens = allData.filter((item) => item.type === type);
-  const balanceTotal = balanceItens.reduce((acc, item) => {
-    return acc + item.value;
+  const balanceItems = allData.filter((item) => item.type === type);
+  const balanceTotal = balanceItems.reduce((acc, item) => {
+    return Number(acc) + Number(item.value);
   }, 0);
 
   return balanceTotal;
