@@ -8,9 +8,11 @@ import { removeCookies } from 'cookies-next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link';
+import { getCookie } from 'cookies-next';
 
 function Header() {
   const router = useRouter();
+  const userID = getCookie('userID');
 
   async function logOff() {
     try {
@@ -31,9 +33,11 @@ function Header() {
           </a>
         </Link>
         <div className="text-2xl flex items-center gap-3 ml-2">
-          <p className="text-xl font-semibold">
-            {auth.currentUser?.displayName}
-          </p>
+          {userID && (
+            <p className="text-xl font-semibold">
+              {auth.currentUser?.displayName}
+            </p>
+          )}
           <MdLogout className="cursor-pointer" onClick={logOff} title="Sair" />
         </div>
       </section>
