@@ -24,11 +24,11 @@ function EditExpense({ currentExpenseEditing }) {
     event.preventDefault();
     try {
       if (expenseName === '') {
-        toast.error('Invalid Expense Name');
+        toast.error('Nome inválido.');
       } else if (expenseType === '') {
-        toast.error('Invalid Expense Type');
+        toast.error('Tipo inválido.');
       } else if (expenseValue === '') {
-        toast.error('Invalid Expense Value');
+        toast.error('Valor inválido.');
       } else {
         const id = globalState.currentExpenseId;
         const newValue = validateExpenseValue(expenseValue, expenseType);
@@ -38,7 +38,7 @@ function EditExpense({ currentExpenseEditing }) {
           type: expenseType,
           value: newValue,
         });
-        toast.success('Expense successfully updated.');
+        toast.success('Despesa alterada com sucesso.');
         store.dispatch(editExpense(false));
       }
     } catch (error) {
@@ -61,14 +61,14 @@ function EditExpense({ currentExpenseEditing }) {
         onClick={cancelEditExpense}
       >
         <div className="bg-green-600 p-5 rounded-md text-center text-white font-semibold popUp w-60">
-          <h2 className="uppercase mb-4">Edit Expense</h2>
+          <h2 className="uppercase mb-4">Editar despesa</h2>
 
           <form className="space-y-3" onSubmit={saveNewExpense}>
             <div className="space-x-2 text-left">
               <input
                 type="text"
                 className="text-black p-1 rounded-sm w-full"
-                placeholder="Expense name..."
+                placeholder="Nome..."
                 value={expenseName}
                 onChange={({ target }) => setExpenseName(target.value)}
               />
@@ -80,17 +80,17 @@ function EditExpense({ currentExpenseEditing }) {
                 onChange={({ target }) => setExpenseType(target.value)}
               >
                 <option value="" disabled>
-                  Select type
+                  Selecione o tipo
                 </option>
-                <option value="expense">Expense</option>
-                <option value="income">Income</option>
+                <option value="income">Saída</option>
+                <option value="expense">Entrada</option>
               </select>
             </div>
             <div className="space-x-2 text-left">
               <input
                 type="number"
                 className="text-black p-1 rounded-sm w-full"
-                placeholder="Expense value..."
+                placeholder="Valor..."
                 value={expenseValue}
                 onChange={({ target }) => setExpenseValue(target.value)}
               />
@@ -100,13 +100,13 @@ function EditExpense({ currentExpenseEditing }) {
                 className="btn bg-blue-500 px-2 py-1 rounded-md uppercase hover:bg-blue-600"
                 onClick={saveNewExpense}
               >
-                Save
+                Salvar
               </button>
               <button
                 className="btn bg-yellow-500 px-2 py-1 rounded-md uppercase hover:bg-yellow-600"
                 data-function="close"
               >
-                Cancel
+                Cancelar
               </button>
             </div>
           </form>

@@ -9,23 +9,23 @@ function Balance() {
     <div className="mt-10 bg-gray-100 text-black p-2 text-xl font-semibold uppercase rounded-md">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:w-3/5 mx-auto text-center">
         <p>
-          Total expense:
-          <br />
-          <span className="text-red-500">
-            {numberToCurrency(globalState.balance.totalExpense)}
-          </span>
-        </p>
-        <p>
-          Total income:
+          Entradas totais:
           <br />
           <span className="text-green-500">
             {numberToCurrency(globalState.balance.totalIncome)}
           </span>
         </p>
+        <p>
+          Saídas totais:
+          <br />
+          <span className="text-red-500">
+            {numberToCurrency(globalState.balance.totalExpense)}
+          </span>
+        </p>
       </div>
       <div className="text-center mt-5">
         <p className="bg-yellow-400 inline-block px-2 font-bold">
-          Balance:{' '}
+          Balanço:{' '}
           <span
             className={`${
               globalState.balance.finalBalance < 0

@@ -1,5 +1,5 @@
 import React from 'react';
-import { monthsOfYear } from '../helpers/functions';
+import { monthsOfYear, meses } from '../helpers/functions';
 import { useSelector } from 'react-redux';
 import { store, getMonth, getYear } from '../globalStates/store';
 
@@ -8,6 +8,7 @@ function SelectDate() {
   function getExpenseYear({ target }) {
     store.dispatch(getYear(target.value));
   }
+
   function getExpenseMonth({ target }) {
     store.dispatch(getMonth(target.value));
   }
@@ -19,9 +20,9 @@ function SelectDate() {
         onChange={getExpenseMonth}
         className="text-xl px-2 rounded-md"
       >
-        {monthsOfYear.map((month) => (
+        {monthsOfYear.map((month, index) => (
           <option key={month} value={month}>
-            {month}
+            {meses[index]}
           </option>
         ))}
       </select>

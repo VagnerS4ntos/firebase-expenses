@@ -20,7 +20,7 @@ function DeleteExpense() {
     event.preventDefault();
     try {
       await deleteDoc(doc(db, 'allExpenses', globalState.currentExpenseId));
-      toast.success('Expense successfully deleted.');
+      toast.success('Despesa deletada com sucesso!');
       store.dispatch(deleteExpense(false));
     } catch (error) {
       toast.error(error.message);
@@ -35,7 +35,7 @@ function DeleteExpense() {
         onClick={cancelDeleteExpense}
       >
         <div className="bg-green-600 p-5 rounded-md text-center text-white font-semibold popUp w-60">
-          <h2 className="uppercase mb-4">Delete Expense?</h2>
+          <h2 className="uppercase mb-4">Excluir despesa?</h2>
 
           <form className="space-y-3" onSubmit={deleteCurrentExpense}>
             <div className="grid grid-cols-2 gap-2">
@@ -43,13 +43,13 @@ function DeleteExpense() {
                 className="btn bg-red-500 px-2 py-1 rounded-md uppercase hover:bg-red-600"
                 onClick={deleteCurrentExpense}
               >
-                Yes
+                Sim
               </button>
               <button
                 className="btn bg-blue-500 px-2 py-1 rounded-md uppercase hover:bg-blue-600"
                 data-function="close"
               >
-                No
+                Não
               </button>
             </div>
           </form>

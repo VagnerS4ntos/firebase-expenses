@@ -3,9 +3,9 @@ export function capitalizeFirstLetter(string) {
 }
 
 export function numberToCurrency(value) {
-  return Number(value).toLocaleString('en-us', {
+  return Number(value).toLocaleString('pt-br', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
   });
 }
 
@@ -48,4 +48,19 @@ export const monthsOfYear = [
   'October',
   'November',
   'December',
+];
+
+export const meses = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
 ];

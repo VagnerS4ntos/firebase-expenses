@@ -17,11 +17,17 @@ export default function Home() {
   async function login(event) {
     event.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      setCookies('userID', auth.currentUser.uid, {
-        maxAge: 3600, // Will expire after 1hr (value is in number of sec.)
-      });
-      router.push('/expenses');
+      if (email === '') {
+        toast.error('E-mail inválido.');
+      } else if (password === '') {
+        toast.error('Senha inválida.');
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+        setCookies('userID', auth.currentUser.uid, {
+          maxAge: 3600, // Will expire after 1hr (value is in number of sec.)
+        });
+        router.push('/expenses');
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -30,7 +36,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Expenses - Login</title>
+        <title>Receitas e Despesas - Login</title>
       </Head>
       <main className="grid place-items-center px-2 min-h-screen bg-gray-800 pt-32">
         <div className="p-5 bg-gray-300 rounded-md ">
@@ -51,7 +57,7 @@ export default function Home() {
               <input
                 type="password"
                 className="px-2 py-1 rounded-md"
-                placeholder="Password..."
+                placeholder="Senha..."
                 value={password}
                 onChange={({ target }) => setPassword(target.value)}
               />
@@ -63,18 +69,18 @@ export default function Home() {
 
             <Link href="/resetPassword" passHref>
               <p className="mt-2 text-sm">
-                Forgot password?{' '}
+                Esqueceu a senha?{' '}
                 <a className="text-red-500 cursor-pointer font-semibold">
-                  Reset
+                  Resetar
                 </a>
               </p>
             </Link>
 
             <Link href="/createAccount" passHref>
               <p className="mt-2 text-sm">
-                Don&apos;t have an account?{' '}
+                Não tem uma conta?{' '}
                 <a className="text-red-500 cursor-pointer font-semibold">
-                  Sing up
+                  Registrar-se
                 </a>
               </p>
             </Link>

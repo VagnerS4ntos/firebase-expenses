@@ -13,17 +13,20 @@ export default function SignUp() {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const router = useRouter();
 
   async function signUp(event) {
     event.preventDefault();
     try {
       if (name === '') {
-        toast.error('Invalid name.');
+        toast.error('Nome inválido.');
       } else if (email === '') {
-        toast.error('Invalid e-mail.');
+        toast.error('E-mail inválido.');
       } else if (password === '') {
-        toast.error('Invalid password.');
+        toast.error('Senha inválida.');
+      } else if (password !== confirmPassword) {
+        toast.error('Senhas diferentes.');
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(auth.currentUser, {
@@ -42,7 +45,7 @@ export default function SignUp() {
   return (
     <>
       <Head>
-        <title>Expenses - SignUp</title>
+        <title>Receitas e Despesas - Registrar-se</title>
       </Head>
       <main className="grid place-items-center px-2 min-h-screen bg-gray-800 pt-32">
         <div className="p-5 bg-gray-300 rounded-md">
@@ -54,7 +57,7 @@ export default function SignUp() {
               <input
                 type="text"
                 className="px-2 py-1 rounded-md"
-                placeholder="Name..."
+                placeholder="Nome..."
                 value={name}
                 onChange={({ target }) => setName(target.value)}
               />
@@ -68,23 +71,30 @@ export default function SignUp() {
                 onChange={({ target }) => setEmail(target.value)}
               />
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-5">
               <input
                 type="password"
                 className="px-2 py-1 rounded-md"
-                placeholder="Password..."
+                placeholder="Senha..."
                 value={password}
                 onChange={({ target }) => setPassword(target.value)}
+              />
+              <input
+                type="password"
+                className="px-2 py-1 rounded-md"
+                placeholder="Confirmar senhas..."
+                value={confirmPassword}
+                onChange={({ target }) => setConfirmPassword(target.value)}
               />
             </div>
 
             <button className="bg-blue-400 uppercase font-semibold px-4 py-1 mt-5 rounded-md w-full hover:bg-blue-500">
-              Sign up
+              Registrar-se
             </button>
 
             <Link href="/" passHref>
               <p className="mt-2 text-sm">
-                Already have an account?{' '}
+                Já tem uma conta?{' '}
                 <a className="text-red-500 cursor-pointer font-semibold">
                   Login
                 </a>
