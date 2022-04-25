@@ -5,10 +5,12 @@ import { auth } from '../firebase/apiConfig';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 function ResetPassword() {
   const [email, setEmail] = React.useState('');
   const [reset, setReset] = React.useState(false);
+  const router = useRouter();
 
   async function resetPassword(event) {
     event.preventDefault();
@@ -60,6 +62,12 @@ function ResetPassword() {
                   Resetar
                 </button>
               </form>
+              <button
+                className="bg-blue-500 w-full rounded-md mt-5 py-1 hover:bg-blue-600"
+                onClick={() => router.push('/')}
+              >
+                Login
+              </button>
             </>
           )}
         </section>

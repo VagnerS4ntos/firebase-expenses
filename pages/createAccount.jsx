@@ -3,7 +3,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { MdPerson } from 'react-icons/md';
 import { auth } from '../firebase/apiConfig';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+} from 'firebase/auth';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setCookies } from 'cookies-next';
@@ -36,6 +40,7 @@ export default function SignUp() {
           maxAge: 3600, // Will expire after 1hr (value is in number of sec.)
         });
         router.push('/expenses');
+        sendEmailVerification(auth.currentUser);
       }
     } catch (error) {
       toast.error(error.message);
