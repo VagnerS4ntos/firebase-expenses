@@ -14,6 +14,7 @@ import {
   getExpenseId,
   editExpense,
   getBalance,
+  userLogged,
 } from '../globalStates/store';
 import { db } from '../firebase/apiConfig';
 import { collection, getDocs } from 'firebase/firestore';
@@ -25,6 +26,7 @@ import NewExpense from '../components/NewExpense';
 import DeleteExpense from '../components/DeleteExpense';
 import EditExpense from '../components/EditExpense';
 import Balance from '../components/Balance';
+import Spinning from '../components/Spinning';
 
 function Expenses() {
   const globalState = useSelector((state) => state);
@@ -32,6 +34,7 @@ function Expenses() {
 
   //GET ALL EXPENSES
   React.useEffect(() => {
+    store.dispatch(userLogged(true));
     async function getExpenses() {
       try {
         const data = await getDocs(collection(db, 'allExpenses'));
@@ -111,8 +114,8 @@ function Expenses() {
   if (globalState.loading) {
     return (
       <main className="bg-gray-800 min-h-screen text-white pt-32">
-        <div className="container mx-auto">
-          <h1 className="mt-10">Carregando...</h1>
+        <div className="container mx-auto mt-10">
+          <Spinning width="w-36" height="h-36" />
         </div>
       </main>
     );

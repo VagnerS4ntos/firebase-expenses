@@ -41,6 +41,10 @@ export function getBalance(balance) {
   return { type: 'getBalance', payload: balance };
 }
 
+export function userLogged(status) {
+  return { type: 'userLogged', payload: status };
+}
+
 const initialState = {
   allExpenses: [],
   expensesOnScreen: [],
@@ -53,6 +57,7 @@ const initialState = {
   month: monthsOfYear[new Date().getMonth()],
   balance: { totalExpense: 0, totalIncome: 0, finalBalance: 0 },
   deleteUser: { status: false, userId: '' },
+  userLogged: false,
 };
 
 export const store = createStore(rootReducer);
@@ -78,6 +83,8 @@ export function rootReducer(state = initialState, action) {
       return { ...state, editExpense: action.payload };
     case 'getBalance':
       return { ...state, balance: action.payload };
+    case 'userLogged':
+      return { ...state, userLogged: action.payload };
     default:
       return state;
   }

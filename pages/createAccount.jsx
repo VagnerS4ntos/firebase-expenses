@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setCookies } from 'cookies-next';
 import { useRouter } from 'next/router';
+import Spinning from '../components/Spinning';
 
 export default function SignUp() {
   const [name, setName] = React.useState('');
@@ -19,6 +20,7 @@ export default function SignUp() {
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const router = useRouter();
+  const [registering, setRegistering] = React.useState(false);
 
   async function signUp(event) {
     event.preventDefault();
@@ -32,6 +34,7 @@ export default function SignUp() {
       } else if (password !== confirmPassword) {
         toast.error('Senhas diferentes.');
       } else {
+        setRegistering(true);
         await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(auth.currentUser, {
           displayName: name,
@@ -93,8 +96,12 @@ export default function SignUp() {
               />
             </div>
 
-            <button className="bg-blue-400 uppercase font-semibold px-4 py-1 mt-5 rounded-md w-full hover:bg-blue-500">
-              Registrar-se
+            <button className="bg-blue-400 uppercase font-semibold px-4 py-1 mt-5 rounded-md w-full hover:bg-blue-500 text-white">
+              {registering ? (
+                <Spinning title="Carregando" width="w-5" height="h-5" />
+              ) : (
+                'Cadastrar'
+              )}
             </button>
 
             <Link href="/" passHref>

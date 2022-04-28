@@ -8,17 +8,19 @@ import { removeCookies } from 'cookies-next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link';
-import { getCookie } from 'cookies-next';
+import { useSelector } from 'react-redux';
+import { store, userLogged } from '../globalStates/store';
 
 function Header() {
   const router = useRouter();
-  const userID = getCookie('userID');
+  const globalState = useSelector((state) => state);
 
   async function logOff() {
     try {
       await signOut(auth);
       removeCookies('userID');
       router.push('/');
+      store.dispatch(userLogged(false));
     } catch (error) {
       toast.error(error.message);
     }
@@ -33,12 +35,18 @@ function Header() {
           </a>
         </Link>
         <div className="text-2xl flex items-center gap-3 ml-2">
-          {userID && (
-            <p className="text-xl font-semibold">
-              {auth.currentUser?.displayName}
-            </p>
+          {globalState.userLogged && (
+            <>
+              <p className="text-xl font-semibold">
+                {auth.currentUser?.displayName}
+              </p>
+              <MdLogout
+                className="cursor-pointer"
+                onClick={logOff}
+                title="Sair"
+              />
+            </>
           )}
-          <MdLogout className="cursor-pointer" onClick={logOff} title="Sair" />
         </div>
       </section>
     </header>
