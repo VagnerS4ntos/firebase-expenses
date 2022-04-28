@@ -90,7 +90,7 @@ export default function SignUp() {
               <input
                 type="password"
                 className="px-2 py-1 rounded-md"
-                placeholder="Confirmar senhas..."
+                placeholder="Confirmar senha..."
                 value={confirmPassword}
                 onChange={({ target }) => setConfirmPassword(target.value)}
               />
